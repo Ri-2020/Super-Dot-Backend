@@ -2,7 +2,7 @@ import { Timestamp } from "mongodb";
 import mongoose, { SchemaType } from "mongoose";
 
 
-const userSchmea = mongoose.Schema(
+const userSchema = mongoose.Schema(
     {
         username: {
             type: String,

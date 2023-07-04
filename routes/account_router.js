@@ -1,8 +1,13 @@
 import { Router } from "express";
-const accountRouter = Router();
 import AccountController from "../controllers/account_controller.js";
+import AuthMiddleware from "../middlewares/auth_middleware.js";
 
-accountRouter.get("/:userId" , AccountController.getUser )
+
+const accountRouter = Router();
+
+
 accountRouter.post("/register" , AccountController.registerUser )
+accountRouter.post("/login" , AccountController.loginUser)
+accountRouter.post("/updateEmail" , AuthMiddleware.checkUserAuth , AccountController.updateEmail)
 
 export default accountRouter
