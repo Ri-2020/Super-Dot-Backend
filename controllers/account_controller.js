@@ -14,10 +14,9 @@ class AccountController{
         let { username , password } = req.body;
         let email;
         if(Utility.isValidEmail(username)){
-            username = null
             email = username;
+            username = null
         }
-        // console.log(username);
         if((username || email) && password){
             try{
                 let user;
@@ -150,6 +149,50 @@ class AccountController{
             }
         }else{
             Log("Missing Credientials, Connot update email!")
+            return SendError.missingCredentials(res);
+        }
+    }
+
+    static updateScore = async (req, res) =>{ 
+        const Log = (message) => console.log("AccountController: "+message);
+        Log("Update scores in progress...")
+        const { highScore, gamesPlayed,averageScore,totalScore,lastGameTimestamp,totalTimePlayed, dotsKilled } = req.body;
+        if(highScore && gamesPlayed && averageScore && totalScore && lastGameTimestamp && totalTimePlayed && dotsKilled ){
+            try{
+                const user = await UserModel.findOne({ _id: req.user._id });
+                if(!user){
+                    Log("User not found, connnot update score!")
+                    return SendError.notFoundError(res, "User");
+                }
+
+                user.highScore = highScore;
+                user.gamesPlayed = gamesPlayed;
+                user.averageScore = averageScore;
+                user.totalScore = totalScore;
+                user.lastGameTimestamp = lastGameTimestamp;
+                user.totalTimePlayed = totalTimePlayed;
+                user.dotsKilled = dotsKilled;
+
+                const result = await user.save();
+                Log("Score Updated Successfully.")
+                return SendSuccess.objectUpdatedSuccessfully(res, "Score", 
+                    {
+                        username: user.username,
+                        highScore: user.highScore,
+                        gamesPlayed: user.gamesPlayed,
+                        averageScore: user.averageScore,
+                        totalScore: user.totalScore,
+                        lastGameTimestamp: user.lastGameTimestamp,
+                        totalTimePlayed: user.totalTimePlayed,
+                        dotsKilled: user.dotsKilled, 
+                    },
+                );
+            }catch(e){
+                Log("Internal Server error, Connot update Score! "+e.message)
+                return SendError.internalServerError(res);
+            }
+        }else{
+            Log("Missing Credientials, Connot update Score!")
             return SendError.missingCredentials(res);
         }
     }

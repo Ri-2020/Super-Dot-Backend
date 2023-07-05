@@ -18,7 +18,7 @@ class SendSuccess{
     });
     static objectUpdatedSuccessfully = (res, obj , data) => res.status(200).json({
         status: "success",
-        message : `${obj} created successfully`,
+        message : `${obj} Updated successfully`,
         data: data,
     });
 }
