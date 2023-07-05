@@ -5,7 +5,6 @@ import AuthMiddleware from "../middlewares/auth_middleware.js";
 
 const accountRouter = Router();
 
-
 accountRouter.post("/register" , AccountController.registerUser )
 accountRouter.post("/login" , AccountController.loginUser)
 accountRouter.post("/updateEmail" , AuthMiddleware.checkUserAuth , AccountController.updateEmail)

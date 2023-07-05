@@ -7,6 +7,10 @@ class SendError{
         status: "failed",
         message: "Invalid Credentials Provided",
     });
+    static unauthorizedUser = (res) => res.status(401).json({
+        status: "failed",
+        message: "Unauthorized User, invalid token used"
+    });
     static notFoundError = (res, obj) => res.status(404).json({
         status: "failed",
         message: `${obj} not found`,
