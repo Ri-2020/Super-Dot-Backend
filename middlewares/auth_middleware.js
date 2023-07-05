@@ -1,4 +1,7 @@
+import jwt from "jsonwebtoken";
+
 import SendError from "../utils/errors_response.js";
+import UserModel from "../models/user_schema.js";
 
 class AuthMiddleware{
     static checkUserAuth = async(req, res, next) => {
@@ -10,14 +13,17 @@ class AuthMiddleware{
         if (authorization && authorization.startsWith("Bearer")) {
             try {
               token = authorization.split(" ")[1];
-              console.log(token); 
-              // TODO: create a secret key 
+              console.log("|"+token); 
               const userId = jwt.verify(token, process.env.JWT_SECRET_KEY);
+              Log(userId._id) // this is printing
               req.user = await UserModel.findById(userId).select("-password");
-              Log("Authorized User found.")
-              next();
-            } catch (error) {
-                Log("Unauthorized user!")
+              console.log(req.user)
+              if(req.user){
+                Log("Authorized User found.")
+                next();
+              }else throw new Error("Unauthorized user!");
+            }catch (error) {
+              Log("Unauthorized user!")
               return SendError.unauthorizedUser(res);
             }
         }
