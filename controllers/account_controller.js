@@ -124,6 +124,10 @@ class AccountController{
         Log("Update email in progress...")
         const { email } = req.body;
         if(email){
+            if(!Utility.isValidEmail(email)){
+                Log("Invalid email, could not update email!")
+                return SendError.invalidCredentials(res);
+            }
             try{
                 const user = await UserModel.findOne({ _id: req.user._id });
                 if(!user){
