@@ -6,10 +6,11 @@ class AuthMiddleware{
         Log("Checking user auth...");
         let token;
         const { authorization } = req.headers;
+        Log(authorization);
         if (authorization && authorization.startsWith("Bearer")) {
             try {
               token = authorization.split(" ")[1];
-              console.log(token);
+              console.log(token); 
               // TODO: create a secret key 
               const userId = jwt.verify(token, process.env.JWT_SECRET_KEY);
               req.user = await UserModel.findById(userId).select("-password");
