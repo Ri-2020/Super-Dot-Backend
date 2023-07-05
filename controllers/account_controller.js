@@ -46,7 +46,7 @@ class AccountController{
                     Log("Logged in successfully.")
                     return SendSuccess.LoginSuccessfully(res, "User", 
                         {
-                            data: {
+                            user: {
                                 username: user.username,
                                 email: user.email,
                                 profileimage: user.profileimage,
@@ -101,7 +101,7 @@ class AccountController{
                 });
                 Log("User Created Successfully.")
                 return SendSuccess.userCreatedSuccessfully(res, {
-                    data: {
+                    user: {
                         username: user.username,
                         highScore: user.highScore,
                         profileimage: user.profileimage,
@@ -174,9 +174,10 @@ class AccountController{
                 user.dotsKilled = dotsKilled;
 
                 const result = await user.save();
+                // Log(result);
                 Log("Score Updated Successfully.")
                 return SendSuccess.objectUpdatedSuccessfully(res, "Score", 
-                    {
+                    {user: {
                         username: user.username,
                         highScore: user.highScore,
                         gamesPlayed: user.gamesPlayed,
@@ -185,7 +186,7 @@ class AccountController{
                         lastGameTimestamp: user.lastGameTimestamp,
                         totalTimePlayed: user.totalTimePlayed,
                         dotsKilled: user.dotsKilled, 
-                    },
+                    },}
                 );
             }catch(e){
                 Log("Internal Server error, Connot update Score! "+e.message)

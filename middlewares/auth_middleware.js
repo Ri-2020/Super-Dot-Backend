@@ -9,15 +9,15 @@ class AuthMiddleware{
         Log("Checking user auth...");
         let token;
         const { authorization } = req.headers;
-        Log(authorization);
+        // Log(authorization);
         if (authorization && authorization.startsWith("Bearer")) {
             try {
               token = authorization.split(" ")[1];
-              console.log("|"+token); 
+              // console.log("|"+token); 
               const userId = jwt.verify(token, process.env.JWT_SECRET_KEY);
-              Log(userId._id) // this is printing
+              // Log(userId._id) // this is printing
               req.user = await UserModel.findById(userId).select("-password");
-              console.log(req.user)
+              // console.log(req.user)
               if(req.user){
                 Log("Authorized User found.")
                 next();
